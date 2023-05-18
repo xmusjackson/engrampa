@@ -2140,12 +2140,16 @@ progress_dialog_delete_event (GtkWidget *caller,
 
 static void
 open_folder (GtkWindow  *parent,
-	     const char *folder)
+	     const char *folder,
+		 gboolean noparent)
 {
 	GError *error = NULL;
 
 	if (folder == NULL)
 		return;
+
+	if (noparent)
+		parent = NULL;
 
 	if (! gtk_show_uri_on_window (parent, folder, GDK_CURRENT_TIME, &error)) {
 		GtkWidget *d;
@@ -2171,9 +2175,9 @@ open_folder (GtkWindow  *parent,
 }
 
 static void
-fr_window_view_extraction_destination_folder (FrWindow *window)
+fr_window_view_extraction_destination_folder (FrWindow *window, gboolean noparent)
 {
-	open_folder (GTK_WINDOW (window), fr_archive_get_last_extraction_destination (window->archive));
+	open_folder (GTK_WINDOW (window), fr_archive_get_last_extraction_destination (window->archive), noparent);
 }
 
 static void change_button_label (FrWindow  *window,
@@ -2237,11 +2241,11 @@ progress_dialog_response (GtkDialog *dialog,
 		close_progress_dialog (window, TRUE);
 		break;
 	case DIALOG_RESPONSE_OPEN_DESTINATION_FOLDER:
-		fr_window_view_extraction_destination_folder (window);
+		fr_window_view_extraction_destination_folder (window, FALSE);
 		close_progress_dialog (window, TRUE);
 		break;
 	case DIALOG_RESPONSE_OPEN_DESTINATION_FOLDER_AND_QUIT:
-		fr_window_view_extraction_destination_folder (window);
+		fr_window_view_extraction_destination_folder (window, TRUE);
 		close_progress_dialog (window, TRUE);
 		fr_window_close (window);
 		break;

@@ -2141,7 +2141,7 @@ progress_dialog_delete_event (GtkWidget *caller,
 static void
 open_folder (GtkWindow  *parent,
 	     const char *folder,
-		 gboolean noparent)
+	     gboolean noparent)
 {
 	GError *error = NULL;
 
@@ -2175,7 +2175,8 @@ open_folder (GtkWindow  *parent,
 }
 
 static void
-fr_window_view_extraction_destination_folder (FrWindow *window, gboolean noparent)
+fr_window_view_extraction_destination_folder (FrWindow *window,
+                                              gboolean noparent)
 {
 	open_folder (GTK_WINDOW (window), fr_archive_get_last_extraction_destination (window->archive), noparent);
 }
